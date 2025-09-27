@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleGenAI } from '@google/genai';
 
 @Injectable()
-export class EmbeddingService {
+export class AiService {
   private readonly genAi: GoogleGenAI;
   constructor(private readonly configService: ConfigService) {
     const apiKey = this.configService.get<string>('GEMINI_KEY');

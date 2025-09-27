@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EmbeddingService } from './embedding.service';
+import { AiService } from './ai.service';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule],
-  providers: [EmbeddingService],
-  exports: [EmbeddingService],
+  providers: [AiService],
+  exports: [AiService],
 })
 export class EmbeddingModule {}
