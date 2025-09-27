@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice RAG Customer Care Assistant</title>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎙️ Voice RAG Assistant</h1>
+        <p>
+          This is a sample implementation of voice based RAG assistant to answer
+          questions related to orders and returns!
+        </p>
+      </div>
+
+      <div class="main-interface">
+        <div class="voice-controls">
+          <button
+            id="micButton"
+            class="mic-button"
+            title="Click to start recording"
+          >
+            🎤
+          </button>
+          <div id="status" class="status">Click the microphone to start</div>
+        </div>
+
+        <div class="controls">
+          <button id="clearBtn" class="control-btn">Clear History</button>
+          <button id="toggleTTS" class="control-btn active">TTS: ON</button>
+          <button id="stopSpeaking" class="control-btn">Stop Speaking</button>
+        </div>
+
+        <div id="error" class="error" style="display: none"></div>
+
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <div>Processing your request...</div>
+        </div>
+
+        <div id="transcript" class="transcript" style="display: none">
+          <h3>You said:</h3>
+          <div id="transcriptContent" class="transcript-content"></div>
+        </div>
+
+        <div id="response" class="response" style="display: none">
+          <h3>Assistant:</h3>
+          <div id="responseContent" class="response-content"></div>
+          <div id="citation" class="citation"></div>
+        </div>
+
+        <div class="conversation-history">
+          <div id="conversationHistory"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -2,20 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GoogleGenAI } from '@google/genai';
 
-jest.mock('@google/genai', () => {
-  return {
-    GenAIClient: jest.fn().mockImplementation(() => ({
-      models: {
-        embedContent: jest.fn().mockImplementation(({ contents }) => {
-          return Promise.resolve({
-            embeddings: Array(1536).fill(0.01),
-          });
-        }),
-      },
-    })),
-  };
-});
-
 @Injectable()
 export class EmbeddingService {
   private readonly genAi: GoogleGenAI;
