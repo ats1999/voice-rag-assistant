@@ -29,7 +29,6 @@ export class QueryService {
 
   async handleUserQuery(file: Express.Multer.File) {
     const userQuery = await this.getSttFromUserQuery(file);
-
     if (!userQuery) {
       throw new InternalServerErrorException(
         'Something went wrong! Please try again!',
@@ -45,8 +44,10 @@ export class QueryService {
       userQuery,
     );
 
-    const answer = await this.aiService.llmPrompt(prompt);
-    return { answer };
+    const textResponse = await this.aiService.llmPrompt(prompt)!;
+    const audioContent = await this.aiService.tts(textResponse!);
+    const data = audioContent?.parts?.[0]?.inlineData?.data;
+    return data;
   }
 
   private async getMatchedContents(

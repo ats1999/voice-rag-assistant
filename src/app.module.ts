@@ -6,6 +6,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { QueryModule } from './query/query.module';
 import { VectorDbModule } from './vector-db/vector-db.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { MetricsModule } from './metrics/metric.module';
 
 @Module({
   imports: [
@@ -19,6 +21,12 @@ import { VectorDbModule } from './vector-db/vector-db.module';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/',
     }),
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true, // collect Node.js process metrics (CPU, memory, etc.)
+      },
+    }),
+    MetricsModule,
   ],
   providers: [AppService],
 })
