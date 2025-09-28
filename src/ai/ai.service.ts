@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  Content,
   createPartFromUri,
   createUserContent,
   GoogleGenAI,
@@ -45,8 +46,7 @@ export class AiService {
 
     validateModelResponse(response);
 
-    const part = response.candidates![0].content!.parts![0];
-    return part.text;
+    return response.candidates![0].content;
   }
 
   private async sttFromAudioFile(fileId: string) {
@@ -90,6 +90,26 @@ export class AiService {
     return this.sttFromAudioBuffer(data);
   }
 
+  async tts(contents: Content) {
+    const response = await this.genAi.models.generateContent({
+      model: 'gemini-2.5-flash-preview-tts',
+      contents: [{ parts: contents.parts }],
+      config: {
+        responseModalities: ['AUDIO'],
+        speechConfig: {
+          voiceConfig: {
+            // voiceNames https://ai.google.dev/gemini-api/docs/speech-generation#voices
+            prebuiltVoiceConfig: {
+              voiceName: 'Kore',
+            },
+          },
+        },
+      },
+    });
+
+    validateModelResponse(response);
+    return response.candidates?.[0]?.content;
+  }
   async query(data: Express.Multer.File | string): Promise<string | undefined> {
     const sttResponse = await this.stt(data);
     validateModelResponse(sttResponse);
