@@ -1,0 +1,202 @@
+[
+  {
+    "text": "Order #1: Status is Processing. Expected shipment in 1-2 business days.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "1" }
+  },
+  {
+    "text": "Order #2: Status is Shipped. Tracking number sent to email.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "2" }
+  },
+  {
+    "text": "Order #3: Status is Out for Delivery. Expected to arrive today.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "3" }
+  },
+  {
+    "text": "Order #4: Status is Delivered. Delivered on 2025-09-25.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "4" }
+  },
+  {
+    "text": "Order #5: Status is Cancelled. The order was cancelled per customer request.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "5" }
+  },
+  {
+    "text": "Order #6: Status is Processing. Payment confirmed. Shipment will be prepared soon.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "6" }
+  },
+  {
+    "text": "Order #7: Status is Shipped. Track your order online using the tracking number sent to your email.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "7" }
+  },
+  {
+    "text": "Order #8: Status is Out for Delivery. Courier is en route to the delivery address.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "8" }
+  },
+  {
+    "text": "Order #9: Status is Delivered. Please check your mailbox for delivery confirmation.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "9" }
+  },
+  {
+    "text": "Order #10: Status is Processing. Expected to ship within 24 hours.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "10" }
+  },
+  {
+    "text": "Order #11: Status is Shipped. Estimated delivery 3-5 business days.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "11" }
+  },
+  {
+    "text": "Order #12: Status is Delivered. Left at front door by courier.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "12" }
+  },
+  {
+    "text": "Order #13: Status is Cancelled. Payment was refunded.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "13" }
+  },
+  {
+    "text": "Order #14: Status is Processing. Packing in progress.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "14" }
+  },
+  {
+    "text": "Order #15: Status is Shipped. Check your email for the tracking number.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "15" }
+  },
+  {
+    "text": "Order #16: Status is Out for Delivery. Expected today.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "16" }
+  },
+  {
+    "text": "Order #17: Status is Delivered. Received by recipient.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "17" }
+  },
+  {
+    "text": "Order #18: Status is Cancelled. Order was cancelled due to stock unavailability.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "18" }
+  },
+  {
+    "text": "Order #19: Status is Processing. Awaiting shipment.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "19" }
+  },
+  {
+    "text": "Order #20: Status is Shipped. Courier tracking available online.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "20" }
+  },
+  {
+    "text": "Order #21: Status is Out for Delivery. Delivery expected in 2 hours.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "21" }
+  },
+  {
+    "text": "Order #22: Status is Delivered. Signed by recipient.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "22" }
+  },
+  {
+    "text": "Order #23: Status is Cancelled. Customer requested cancellation.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "23" }
+  },
+  {
+    "text": "Order #24: Status is Processing. Payment verified.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "24" }
+  },
+  {
+    "text": "Order #25: Status is Shipped. Estimated delivery 4-6 business days.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "25" }
+  },
+  {
+    "text": "Order #26: Status is Out for Delivery. Courier on the way.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "26" }
+  },
+  {
+    "text": "Order #27: Status is Delivered. Check mailbox for package.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "27" }
+  },
+  {
+    "text": "Order #28: Status is Cancelled. Refund processed to original payment method.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "28" }
+  },
+  {
+    "text": "Order #29: Status is Processing. Preparing for shipment.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "29" }
+  },
+  {
+    "text": "Order #30: Status is Shipped. Tracking sent to email.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "30" }
+  },
+  {
+    "text": "Order #31: Status is Out for Delivery. Will arrive today.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "31" }
+  },
+  {
+    "text": "Order #32: Status is Delivered. Delivered to front desk.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "32" }
+  },
+  {
+    "text": "Order #33: Status is Cancelled. Item was unavailable.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "33" }
+  },
+  {
+    "text": "Order #34: Status is Processing. Shipment will be ready shortly.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "34" }
+  },
+  {
+    "text": "Order #35: Status is Shipped. Tracking number provided.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "35" }
+  },
+  {
+    "text": "Order #36: Status is Out for Delivery. Expected this afternoon.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "36" }
+  },
+  {
+    "text": "Order #37: Status is Delivered. Package signed by recipient.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "37" }
+  },
+  {
+    "text": "Order #38: Status is Cancelled. Customer cancelled order.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "38" }
+  },
+  {
+    "text": "Order #39: Status is Processing. Awaiting packaging.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "39" }
+  },
+  {
+    "text": "Order #40: Status is Shipped. Estimated delivery in 3-5 days.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "40" }
+  },
+  {
+    "text": "Order #41: Status is Out for Delivery. Courier assigned.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "41" }
+  },
+  {
+    "text": "Order #42: Status is Delivered. Check your email for confirmation.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "42" }
+  },
+  {
+    "text": "Order #43: Status is Cancelled. Order was cancelled automatically.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "43" }
+  },
+  {
+    "text": "Order #44: Status is Processing. Payment confirmed, packing soon.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "44" }
+  },
+  {
+    "text": "Order #45: Status is Shipped. Check tracking email for details.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "45" }
+  },
+  {
+    "text": "Order #46: Status is Out for Delivery. Package will arrive today.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "46" }
+  },
+  {
+    "text": "Order #47: Status is Delivered. Delivered to reception desk.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "47" }
+  },
+  {
+    "text": "Order #48: Status is Cancelled. Refund issued.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "48" }
+  },
+  {
+    "text": "Order #49: Status is Processing. Will ship soon.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "49" }
+  },
+  {
+    "text": "Order #50: Status is Shipped. Tracking info sent to customer email.",
+    "metadata": { "source": "order_status_mock.json", "order_id": "50" }
+  }
+]
