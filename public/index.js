@@ -8,6 +8,7 @@ class VoiceRAGAssistant {
     this.currentUtterance = null;
     this.mediaRecorder = null;
     this.audioChunks = [];
+    this.audio = null;
 
     // Metrics
     this.metrics = {
@@ -93,7 +94,6 @@ class VoiceRAGAssistant {
     this.initializeElements();
     this.setupEventListeners();
     this.registerMediaRecorder();
-    this.initializeSpeechRecognition();
   }
 
   initializeElements() {
@@ -127,51 +127,42 @@ class VoiceRAGAssistant {
     });
   }
 
-  initializeSpeechRecognition() {
-    if (
-      !('webkitSpeechRecognition' in window) &&
-      !('SpeechRecognition' in window)
-    ) {
-      this.showError(
-        'Speech recognition not supported in this browser. Please use Chrome or Edge.',
-      );
-      return;
+  base64ToWav(base64, sampleRate = 24000, numChannels = 1) {
+    const pcm = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const dataSize = pcm.length;
+    const buffer = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(buffer);
+
+    // RIFF header
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + dataSize, true);
+    writeString(view, 8, 'WAVE');
+
+    // fmt subchunk
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true); // Subchunk1Size
+    view.setUint16(20, 1, true); // PCM format
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * numChannels * 2, true); // byte rate
+    view.setUint16(32, numChannels * 2, true); // block align
+    view.setUint16(34, 16, true); // bits per sample
+
+    // data subchunk
+    writeString(view, 36, 'data');
+    view.setUint32(40, dataSize, true);
+
+    // PCM samples
+    const wavData = new Uint8Array(buffer, 44);
+    wavData.set(pcm);
+
+    return new Blob([buffer], { type: 'audio/wav' });
+
+    function writeString(view, offset, str) {
+      for (let i = 0; i < str.length; i++) {
+        view.setUint8(offset + i, str.charCodeAt(i));
+      }
     }
-
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    this.recognition = new SpeechRecognition();
-
-    this.recognition.continuous = false;
-    this.recognition.interimResults = true;
-    this.recognition.lang = 'en-US';
-
-    this.recognition.onstart = () => {
-      this.isRecording = true;
-      this.updateUI();
-    };
-
-    this.recognition.onresult = (event) => {
-      const result = event.results[event.resultIndex];
-      if (result.isFinal) {
-        const transcript = result[0].transcript.trim();
-        this.handleUserInput(transcript);
-      }
-    };
-
-    this.recognition.onerror = (event) => {
-      this.showError(`Speech recognition error: ${event.error}`);
-      this.isRecording = false;
-      this.isProcessing = false;
-      this.updateUI();
-    };
-
-    this.recognition.onend = () => {
-      this.isRecording = false;
-      if (!this.isProcessing) {
-        this.updateUI();
-      }
-    };
   }
 
   async registerMediaRecorder() {
@@ -183,44 +174,6 @@ class VoiceRAGAssistant {
       this.isRecording = true;
       this.updateUI();
     };
-
-    function base64ToWav(base64, sampleRate = 24000, numChannels = 1) {
-      const pcm = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
-      const dataSize = pcm.length;
-      const buffer = new ArrayBuffer(44 + dataSize);
-      const view = new DataView(buffer);
-
-      // RIFF header
-      writeString(view, 0, 'RIFF');
-      view.setUint32(4, 36 + dataSize, true);
-      writeString(view, 8, 'WAVE');
-
-      // fmt subchunk
-      writeString(view, 12, 'fmt ');
-      view.setUint32(16, 16, true); // Subchunk1Size
-      view.setUint16(20, 1, true); // PCM format
-      view.setUint16(22, numChannels, true);
-      view.setUint32(24, sampleRate, true);
-      view.setUint32(28, sampleRate * numChannels * 2, true); // byte rate
-      view.setUint16(32, numChannels * 2, true); // block align
-      view.setUint16(34, 16, true); // bits per sample
-
-      // data subchunk
-      writeString(view, 36, 'data');
-      view.setUint32(40, dataSize, true);
-
-      // PCM samples
-      const wavData = new Uint8Array(buffer, 44);
-      wavData.set(pcm);
-
-      return new Blob([buffer], { type: 'audio/wav' });
-
-      function writeString(view, offset, str) {
-        for (let i = 0; i < str.length; i++) {
-          view.setUint8(offset + i, str.charCodeAt(i));
-        }
-      }
-    }
 
     this.mediaRecorder.onstop = async () => {
       this.isRecording = false;
@@ -241,8 +194,8 @@ class VoiceRAGAssistant {
           }
           return res.json();
         })
-        .then(async ({ audioBuffer: base64 }) => {
-          const wavBlob = base64ToWav(base64);
+        .then(async ({ audioBuffer }) => {
+          const wavBlob = this.base64ToWav(audioBuffer);
           const url = URL.createObjectURL(wavBlob);
           const audio = new Audio(url);
           audio.play();
