@@ -8,13 +8,20 @@ import {
 } from '@google/genai';
 import path from 'path';
 import { validateModelResponse } from './util';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Histogram } from 'prom-client';
+import { withTimer } from '../metrics/timer.util';
 
 @Injectable()
 export class AiService {
   private readonly genAi: GoogleGenAI;
   private readonly logger = new Logger(AiService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @InjectMetric('function_duration_seconds')
+    private readonly histogram: Histogram<string>,
+  ) {
     const apiKey = this.configService.get<string>('GEMINI_KEY');
     this.genAi = new GoogleGenAI({
       apiKey,
@@ -36,6 +43,16 @@ export class AiService {
     }
 
     return response.embeddings[0].values!;
+  }
+
+  async getEmbeddingWithTimer(text: string) {
+    return withTimer(
+      this.histogram,
+      { fn: 'ai.service.getEmbedding' },
+      async () => {
+        return this.getEmbedding(text);
+      },
+    );
   }
 
   async llmPrompt(prompt: string) {
