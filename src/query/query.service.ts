@@ -44,16 +44,16 @@ export class QueryService {
     const matchesWithContent = await this.getMatchedContents(matches);
 
     const prompt = this.getQueryPromptWithContext(
-      matchesWithContent.join('\n'),
+      matchesWithContent[0],
       userQuery,
     );
 
-    const textResponse = await this.aiService.llmPromptWithTimer(prompt)!;
+    const llmResponse = await this.aiService.llmPromptWithTimer(prompt)!;
 
-    const audioContent = await this.aiService.ttsWithTimer(textResponse!);
+    const audioContent = await this.aiService.ttsWithTimer(llmResponse!);
 
-    const data = audioContent?.parts?.[0]?.inlineData?.data;
-    return data;
+    const audioBuffer = audioContent?.parts?.[0]?.inlineData?.data;
+    return { audioBuffer, userQuery, llmResponse };
   }
 
   private async getMatchedContents(

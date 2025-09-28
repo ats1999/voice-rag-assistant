@@ -24,7 +24,16 @@ export class QueryController {
       throw new BadRequestException('Audio is missing from request.');
     }
 
-    const audioBuffer = await this.queryService.handleUserQuery(file);
-    return res.send({ audioBuffer });
+    try {
+      const data = await this.queryService.handleUserQuery(file);
+      return res.send(data);
+    } catch (error: any) {
+      if (error.status === 429 || error.status === 503) {
+        const errorMessage = JSON.parse(error.message);
+        return res.status(error.status).send(errorMessage.error.message);
+      }
+
+      throw error;
+    }
   }
 }

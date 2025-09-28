@@ -14,6 +14,8 @@ class VoiceRAGAssistant {
   initializeElements() {
     this.micButton = document.getElementById('micButton');
     this.status = document.getElementById('status');
+    this.input = document.getElementById('input');
+    this.output = document.getElementById('output');
   }
 
   setupEventListeners() {
@@ -75,7 +77,6 @@ class VoiceRAGAssistant {
       const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
       this.audioChunks = [];
 
-      // send to backend
       const formData = new FormData();
       formData.append('audio', audioBlob, 'voice.webm');
 
@@ -87,11 +88,18 @@ class VoiceRAGAssistant {
           }
           return res.json();
         })
-        .then(async ({ audioBuffer }) => {
+        .then(async ({ audioBuffer, userQuery, llmResponse }) => {
+          this.userQuery = userQuery;
+          this.llmResponse = llmResponse;
+
+          this.updateUI();
           const wavBlob = this.base64ToWav(audioBuffer);
           const url = URL.createObjectURL(wavBlob);
+
           this.audio = new Audio(url);
-          audio.play()?.catch(alert);
+          this.audio
+            .play()
+            ?.catch((err) => console.error('Playback error:', err));
         })
         .catch((e) => {
           alert(e.message);
@@ -125,6 +133,14 @@ class VoiceRAGAssistant {
     } else {
       this.micButton.className = 'mic-button';
       this.status.textContent = 'Click the microphone to start';
+    }
+
+    if (this.userQuery) {
+      this.input.innerText = this.userQuery;
+    }
+
+    if (this.llmResponse) {
+      this.output.innerText = this.llmResponse;
     }
   }
 
