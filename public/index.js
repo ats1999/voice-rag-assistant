@@ -6,6 +6,8 @@ class VoiceRAGAssistant {
     this.isProcessing = false;
     this.ttsEnabled = true;
     this.currentUtterance = null;
+    this.mediaRecorder = null;
+    this.audioChunks = [];
 
     // Metrics
     this.metrics = {
@@ -90,6 +92,7 @@ class VoiceRAGAssistant {
 
     this.initializeElements();
     this.setupEventListeners();
+    this.registerMediaRecorder();
     this.initializeSpeechRecognition();
   }
 
@@ -177,14 +180,54 @@ class VoiceRAGAssistant {
     };
   }
 
+  async registerMediaRecorder() {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    this.mediaRecorder = new MediaRecorder(stream);
+    this.mediaRecorder.ondataavailable = (e) => this.audioChunks.push(e.data);
+
+    this.mediaRecorder.onstart = () => {
+      this.isRecording = true;
+      this.updateUI();
+    };
+
+    this.mediaRecorder.onstop = async () => {
+      this.isRecording = false;
+      this.updateUI();
+
+      const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+      this.audioChunks = [];
+
+      // send to backend
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'voice.webm');
+
+      fetch('/query', { method: 'POST', body: formData })
+        .then(async (res) => {
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`HTTP ${res.status}: ${text}`);
+          }
+          return res.json();
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
+    };
+  }
+
+  startRecording() {
+    this.mediaRecorder.start();
+  }
+
+  stopRecording() {
+    this.mediaRecorder.stop();
+  }
+
   toggleRecording() {
     if (this.isRecording) {
-      this.recognition.stop();
-    } else if (this.isProcessing) {
-      return; // Don't start recording while processing
+      this.stopRecording();
     } else {
-      this.hideError();
-      this.recognition.start();
+      this.startRecording();
     }
   }
 
@@ -217,10 +260,8 @@ class VoiceRAGAssistant {
 
       // Update metrics
       const latency = Date.now() - startTime;
-      this.updateMetrics(response.intent, latency, true);
     } catch (error) {
       this.showError(`Error processing request: ${error.message}`);
-      this.updateMetrics('error', Date.now() - startTime, false);
     } finally {
       this.isProcessing = false;
       this.updateUI();
@@ -489,26 +530,6 @@ class VoiceRAGAssistant {
     if (!this.ttsEnabled) {
       this.stopSpeaking();
     }
-  }
-
-  updateMetrics(intent, latency, success) {
-    this.metrics.totalQueries++;
-    this.metrics.totalLatency += latency;
-    this.metrics.lastIntent = intent;
-
-    if (success) {
-      this.metrics.successCount++;
-    }
-
-    // Update UI
-    this.totalQueriesEl.textContent = this.metrics.totalQueries;
-    this.avgLatencyEl.textContent =
-      Math.round(this.metrics.totalLatency / this.metrics.totalQueries) + 'ms';
-    this.successRateEl.textContent =
-      Math.round(
-        (this.metrics.successCount / this.metrics.totalQueries) * 100,
-      ) + '%';
-    this.lastIntentEl.textContent = intent.replace('_', ' ').toUpperCase();
   }
 
   sleep(ms) {
