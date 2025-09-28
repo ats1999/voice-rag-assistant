@@ -107,8 +107,6 @@ class VoiceRAGAssistant {
     this.error = document.getElementById('error');
     this.loading = document.getElementById('loading');
     this.conversationHistory = document.getElementById('conversationHistory');
-    this.clearBtn = document.getElementById('clearBtn');
-    this.toggleTTS = document.getElementById('toggleTTS');
     this.stopSpeaking = document.getElementById('stopSpeaking');
 
     // Metrics elements
@@ -120,8 +118,6 @@ class VoiceRAGAssistant {
 
   setupEventListeners() {
     this.micButton.addEventListener('click', () => this.toggleRecording());
-    this.clearBtn.addEventListener('click', () => this.clearHistory());
-    this.toggleTTS.addEventListener('click', () => this.toggleTTSMode());
     this.stopSpeaking.addEventListener('click', () => this.stopSpeaking());
 
     // Keyboard shortcuts
@@ -562,18 +558,6 @@ class VoiceRAGAssistant {
     this.transcript.style.display = 'none';
     this.response.style.display = 'none';
     this.hideError();
-  }
-
-  toggleTTSMode() {
-    this.ttsEnabled = !this.ttsEnabled;
-    this.toggleTTS.textContent = `TTS: ${this.ttsEnabled ? 'ON' : 'OFF'}`;
-    this.toggleTTS.className = this.ttsEnabled
-      ? 'control-btn active'
-      : 'control-btn';
-
-    if (!this.ttsEnabled) {
-      this.stopSpeaking();
-    }
   }
 
   sleep(ms) {
