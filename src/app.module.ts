@@ -22,6 +22,7 @@ import { MetricsModule } from './metrics/metric.module';
       serveRoot: '/',
     }),
     PrometheusModule.register({
+      global: true,
       defaultMetrics: {
         enabled: true, // collect Node.js process metrics (CPU, memory, etc.)
       },
@@ -29,5 +30,6 @@ import { MetricsModule } from './metrics/metric.module';
     MetricsModule,
   ],
   providers: [AppService],
+  exports: [],
 })
 export class AppModule {}

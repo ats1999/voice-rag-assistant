@@ -35,8 +35,12 @@ export class QueryService {
       );
     }
 
-    const queryEmbedding = await this.aiService.getEmbedding(userQuery);
-    const matches = await this.vectorDbService.getRecords(queryEmbedding);
+    const queryEmbedding =
+      await this.aiService.getEmbeddingWithTimer(userQuery);
+
+    const matches =
+      await this.vectorDbService.getRecordsWithTimer(queryEmbedding);
+
     const matchesWithContent = await this.getMatchedContents(matches);
 
     const prompt = this.getQueryPromptWithContext(
@@ -44,8 +48,10 @@ export class QueryService {
       userQuery,
     );
 
-    const textResponse = await this.aiService.llmPrompt(prompt)!;
-    const audioContent = await this.aiService.tts(textResponse!);
+    const textResponse = await this.aiService.llmPromptWithTimer(prompt)!;
+
+    const audioContent = await this.aiService.ttsWithTimer(textResponse!);
+
     const data = audioContent?.parts?.[0]?.inlineData?.data;
     return data;
   }

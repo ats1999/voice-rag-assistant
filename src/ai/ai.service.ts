@@ -66,6 +66,16 @@ export class AiService {
     return response.candidates![0].content;
   }
 
+  async llmPromptWithTimer(prompt: string) {
+    return withTimer(
+      this.histogram,
+      { fn: 'ai.service.llmPrompt' },
+      async () => {
+        return this.llmPrompt(prompt);
+      },
+    );
+  }
+
   private async sttFromAudioFile(fileId: string) {
     const audioFile = await this.genAi.files.upload({
       file: path.join(process.cwd(), 'uploads', `${fileId}.webm`),
@@ -107,6 +117,12 @@ export class AiService {
     return this.sttFromAudioBuffer(data);
   }
 
+  private async sttWithTimer(data: Express.Multer.File | string) {
+    return withTimer(this.histogram, { fn: 'ai.service.stt' }, async () => {
+      return this.stt(data);
+    });
+  }
+
   async tts(contents: Content) {
     const response = await this.genAi.models.generateContent({
       model: 'gemini-2.5-flash-preview-tts',
@@ -127,8 +143,15 @@ export class AiService {
     validateModelResponse(response);
     return response.candidates?.[0]?.content;
   }
+
+  async ttsWithTimer(contents: Content) {
+    return withTimer(this.histogram, { fn: 'ai.service.tts' }, async () => {
+      return this.tts(contents);
+    });
+  }
+
   async query(data: Express.Multer.File | string): Promise<string | undefined> {
-    const sttResponse = await this.stt(data);
+    const sttResponse = await this.sttWithTimer(data);
     validateModelResponse(sttResponse);
 
     return sttResponse.candidates
