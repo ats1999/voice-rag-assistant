@@ -137,3 +137,6 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+uploads/cd42ad88-aa69-47f7-965e-8df7dfcab218.webm
+uploads/schema.sql
+uploads/voice.webm
