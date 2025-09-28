@@ -6,4 +6,4 @@ import { ConfigModule } from '@nestjs/config';
   providers: [AiService],
   exports: [AiService],
 })
-export class EmbeddingModule {}
+export class AiModule {}
