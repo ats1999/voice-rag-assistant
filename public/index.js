@@ -107,7 +107,6 @@ class VoiceRAGAssistant {
     this.error = document.getElementById('error');
     this.loading = document.getElementById('loading');
     this.conversationHistory = document.getElementById('conversationHistory');
-    this.stopSpeaking = document.getElementById('stopSpeaking');
 
     // Metrics elements
     this.totalQueriesEl = document.getElementById('totalQueries');
@@ -118,7 +117,6 @@ class VoiceRAGAssistant {
 
   setupEventListeners() {
     this.micButton.addEventListener('click', () => this.toggleRecording());
-    this.stopSpeaking.addEventListener('click', () => this.stopSpeaking());
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
@@ -519,12 +517,6 @@ class VoiceRAGAssistant {
     this.currentUtterance.volume = 0.8;
 
     this.synthesis.speak(this.currentUtterance);
-  }
-
-  stopSpeaking() {
-    if (this.synthesis.speaking) {
-      this.synthesis.cancel();
-    }
   }
 
   updateUI() {
