@@ -1,22 +1,10 @@
 class VoiceRAGAssistant {
   constructor() {
-    this.recognition = null;
-    this.synthesis = window.speechSynthesis;
     this.isRecording = false;
     this.isProcessing = false;
-    this.ttsEnabled = true;
-    this.currentUtterance = null;
     this.mediaRecorder = null;
     this.audioChunks = [];
     this.audio = null;
-
-    // Metrics
-    this.metrics = {
-      totalQueries: 0,
-      totalLatency: 0,
-      successCount: 0,
-      lastIntent: 'None',
-    };
 
     this.initializeElements();
     this.setupEventListeners();
@@ -102,8 +90,8 @@ class VoiceRAGAssistant {
         .then(async ({ audioBuffer }) => {
           const wavBlob = this.base64ToWav(audioBuffer);
           const url = URL.createObjectURL(wavBlob);
-          const audio = new Audio(url);
-          audio.play();
+          this.audio = new Audio(url);
+          audio.play()?.catch(alert);
         })
         .catch((e) => {
           alert(e.message);
