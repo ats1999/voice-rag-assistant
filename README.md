@@ -45,7 +45,7 @@ The application follows a modular NestJS architecture with the following key com
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ats1999/voice-rag-assistant.git
    cd voice-rag-assistant
    ```
 
@@ -68,6 +68,9 @@ The application follows a modular NestJS architecture with the following key com
 4. **Start the application**
 
    ```bash
+   # ingest embeddings into pinecode
+   node scripts/ingestVector.js
+
    # Development
    npm run start:dev
 
