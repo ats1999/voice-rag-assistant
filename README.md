@@ -1,98 +1,142 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🎙️ Voice RAG Assistant
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A voice-based Retrieval-Augmented Generation (RAG) assistant built with NestJS that provides intelligent customer support for order and return-related queries. The application uses speech-to-text, vector search, and text-to-speech to create a conversational AI experience.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ Features
 
-## Description
+- **Voice Interface**: Record audio queries using your microphone
+- **Speech-to-Text**: Convert voice input to text using Google Gemini AI
+- **Vector Search**: Semantic search through FAQ documents using Pinecone vector database
+- **Text-to-Speech**: Generate natural-sounding audio responses, again using Gemini AI
+- **Real-time Processing**: Stream audio and get instant responses
+- **Monitoring**: Built-in Prometheus metrics for performance tracking
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🏗️ Architecture
 
-## Project setup
+The application follows a modular NestJS architecture with the following key components:
 
-```bash
-$ npm install
-```
+### Core Modules
 
-## Compile and run the project
+- **AI Module** (`src/ai/`): Handles all AI operations including embeddings, speech-to-text, and text-to-speech
+- **Query Module** (`src/query/`): Processes user queries and orchestrates the RAG pipeline
+- **Vector DB Module** (`src/vector-db/`): Manages vector database operations with Pinecone
+- **Metrics Module** (`src/metrics/`): Provides monitoring and observability
 
-```bash
-# development
-$ npm run start
+### Technology Stack
 
-# watch mode
-$ npm run start:dev
+- **Backend**: NestJS with TypeScript
+- **AI Services**: Google Gemini AI
+- **Vector Database**: Pinecone
+- **Frontend**: Vanilla JavaScript with modern web APIs
+- **Monitoring**: Prometheus metrics
+- **Audio Processing**: Web Audio API, MediaRecorder
 
-# production mode
-$ npm run start:prod
-```
+## 🚀 Getting Started
 
-## Run tests
+### Prerequisites
 
-```bash
-# unit tests
-$ npm run test
+- Node.js (v18 or higher)
+- npm or yarn
+- Pinecone account and API key
+- Google AI API key (Gemini)
 
-# e2e tests
-$ npm run test:e2e
+### Installation
 
-# test coverage
-$ npm run test:cov
-```
+1. **Clone the repository**
 
-## Deployment
+   ```bash
+   git clone <repository-url>
+   cd voice-rag-assistant
+   ```
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+2. **Install dependencies**
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+   ```bash
+   npm install
+   ```
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+3. **Environment Setup**
+   Create a `.env` file in the root directory:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+   ```env
+   GEMINI_KEY=your_gemini_api_key
+   PINE_CODE_API_KEY=your_pinecone_api_key
+   PINE_CODE_INDEX_HOST=your_pinecone_index_host
+   PORT=3000
+   ```
 
-## Resources
+4. **Start the application**
 
-Check out a few resources that may come in handy when working with NestJS:
+   ```bash
+   # Development
+   npm run start:dev
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+   # Production
+   npm run start:prod
+   ```
 
-## Support
+5. **Access the application**
+   Open your browser and navigate to `http://localhost:3000`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📊 Data Ingestion
 
-## Stay in touch
+The application includes FAQ documents for order and return-related queries. To ingest your own data:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. **Prepare your documents**: Place markdown files in the `public/faq/` directory
+2. **Run the ingestion script**:
+   ```bash
+   node scripts/ingestVector.js
+   ```
 
-## License
+The script will:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Read all markdown files from the FAQ directory
+- Generate embeddings using Gemini AI
+- Store vectors in your Pinecone index
+
+## 🎯 Usage
+
+### Web Interface
+
+1. **Start Recording**: Click the microphone button to begin recording
+2. **Speak Your Query**: Ask questions about orders, returns, or any FAQ-related topics
+3. **Stop Recording**: Click the microphone again to stop and process
+4. **Listen to Response**: The assistant will provide an audio response based on the FAQ content
+
+### API Endpoints
+
+- **POST `/query`**: Submit audio file for processing
+  - Content-Type: `multipart/form-data`
+  - Field: `audio` (audio file)
+  - Response: JSON with `audioBuffer`, `userQuery`, and `llmResponse`
+
+- **GET `/metrics`**: Prometheus metrics endpoint
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable               | Description                  | Required |
+| ---------------------- | ---------------------------- | -------- |
+| `GEMINI_KEY`           | Google AI API key for Gemini | Yes      |
+| `PINE_CODE_API_KEY`    | Pinecone API key             | Yes      |
+| `PINE_CODE_INDEX_HOST` | Pinecone index host URL      | Yes      |
+| `PORT`                 | Server port (default: 3000)  | No       |
+
+### AI Model Configuration
+
+The application uses:
+
+- **Embeddings**: `gemini-embedding-001`
+- **LLM**: `gemini-2.5-flash`
+- **TTS**: `gemini-2.5-flash-preview-tts` with "Kore" voice
+
+## 📈 Monitoring
+
+The application includes comprehensive monitoring:
+
+- **HTTP Request Metrics**: Duration, status codes, routes
+- **Function Performance**: AI service operation timing
+- **Vector DB Operations**: Query performance tracking
+
+Access metrics at `/metrics` endpoint in Prometheus format.
